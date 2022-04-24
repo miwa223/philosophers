@@ -2,7 +2,7 @@
 
 void	take_right_fork(t_thread *philo)
 {
-	while (1)
+	while (!philo->monitor->dead)
 	{
 		if (!philo->fork[philo->id]->taken
 			&& !philo->fork[(philo->id + 1) % philo->data->num]->taken)
@@ -17,7 +17,7 @@ void	take_right_fork(t_thread *philo)
 
 void	take_left_fork(t_thread *philo)
 {
-	while (1)
+	while (!philo->monitor->dead)
 	{
 		if (!philo->fork[(philo->id + 1) % philo->data->num]->taken)
 		{

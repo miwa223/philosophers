@@ -7,7 +7,7 @@ void	init_data(char **argv, t_data *data)
 
 	i = 0;
 	data->num = ft_atoi(argv[1], NULL);
-	data->die_t = (unsigned int)ft_atoi(argv[2], NULL) * 1000;
+	data->die_t = (unsigned int)ft_atoi(argv[2], NULL);
 	data->eat_t = (unsigned int)ft_atoi(argv[3], NULL) * 1000;
 	data->sleep_t = (unsigned int)ft_atoi(argv[4], NULL) * 1000;
 	if (argv[5] != NULL)
@@ -37,16 +37,26 @@ t_fork	**init_fork(t_data *data)
 	return (fork);
 }
 
-t_thread	**init_philo(t_data *data)
+t_monitor	*init_monitor(void)
+{
+	t_monitor	*monitor;
+
+	monitor = (t_monitor *)malloc(sizeof(t_monitor));
+	if (monitor == NULL)
+		return (NULL);
+	monitor->dead = false;
+	monitor->dead_philo = 0;
+	monitor->already_dead = false;
+	return (monitor);
+}
+
+t_thread	**init_philo_content(
+	t_data *data, t_fork **fork, t_monitor *monitor)
 {
 	int			i;
-	t_fork		**fork;
 	t_thread	**philo;
 
 	i = 0;
-	fork = init_fork(data);
-	if (fork == NULL)
-		return (NULL);
 	philo = malloc(sizeof(t_thread *) * (data->num));
 	if (philo == NULL)
 		return (NULL);
@@ -58,7 +68,25 @@ t_thread	**init_philo(t_data *data)
 		philo[i]->id = i;
 		philo[i]->data = data;
 		philo[i]->fork = fork;
+		philo[i]->eaten_cnt = 0;
+		philo[i]->monitor = monitor;
 		i++;
 	}
+	return (philo);
+}
+
+t_thread	**init_philo(t_data *data)
+{
+	t_fork		**fork;
+	t_monitor	*monitor;
+	t_thread	**philo;
+
+	fork = init_fork(data);
+	if (fork == NULL)
+		return (NULL);
+	monitor = init_monitor();
+	if (monitor == NULL)
+		return (NULL);
+	philo = init_philo_content(data, fork, monitor);
 	return (philo);
 }

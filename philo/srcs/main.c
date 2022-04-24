@@ -42,12 +42,11 @@ bool	is_valid_argv(int argc, char **argv)
 	return (true);
 }
 
-void	exit_program(int status)
+int	exit_program(int type)
 {
-	if (status == ERROR)
-		exit(EXIT_FAILURE);
-	else
-		exit(EXIT_SUCCESS);
+	(void)type;
+	printf("Error detected while simulation.\n");
+	return (1);
 }
 
 int	philosopher(t_thread **philo)
@@ -58,14 +57,14 @@ int	philosopher(t_thread **philo)
 	while (i < philo[0]->data->num)
 	{
 		if (pthread_create(&philo[i]->tid, NULL, action, philo[i]) != 0)
-			exit(EXIT_FAILURE);
+			return (1);
 		i++;
 	}
 	i = 0;
 	while (i < philo[0]->data->num)
 	{
 		if (pthread_join(philo[i]->tid, NULL) != 0)
-			exit(EXIT_FAILURE);
+			return (1);
 		i++;
 	}
 	destroy_fork_mutexes(philo[0]);
@@ -78,12 +77,16 @@ int	main(int argc, char **argv)
 	t_thread	**philo;
 
 	if (!is_valid_argv(argc, argv))
-		exit_program(ERROR);
+		exit_program(ARG);
 	init_data(argv, &data);
 	philo = init_philo(&data);
 	if (philo == NULL)
-		return (-1);
-	if (philosopher(philo) == -1)
-		exit_program(ERROR);
+		return (exit_program(MALLOC));
+	if (pthread_create(&philo[0]->monitor->tid, NULL, monitor, philo[0]) != 0)
+		return (exit_program(MONITOR));
+	if (philosopher(philo) == 1)
+		return (exit_program(PHILO));
+	if (pthread_join(philo[0]->monitor->tid, NULL) != 0)
+		return (exit_program(MONITOR));
 	return (0);
 }

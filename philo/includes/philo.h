@@ -6,17 +6,16 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdbool.h>
-# include <sys/time.h>
 
 # define USEC_T_MAX 1000000
 
-typedef enum e_action
+typedef enum e_error
 {
-	EAT,
-	SLEEP,
-	THINK,
-	NONE,
-}				t_action;
+	ARG,
+	MALLOC,
+	MONITOR,
+	PHILO,
+}				t_error;
 
 typedef struct s_data
 {
@@ -33,15 +32,23 @@ typedef struct s_fork
 	pthread_mutex_t	mutex;
 }				t_fork;
 
+typedef struct s_monitor
+{
+	pthread_t	tid;
+	bool		dead;
+	int			dead_philo;
+	bool		already_dead;
+}				t_monitor;
+
 typedef struct s_thread
 {
 	int			id;
 	pthread_t	tid;
-	t_action	act_type;
 	t_data		*data;
 	t_fork		**fork;
 	long		prev_eat_time;
 	int			eaten_cnt;
+	t_monitor	*monitor;
 }				t_thread;
 
 int			philosopher(t_thread **philo);
@@ -58,6 +65,6 @@ void		take_right_fork(t_thread *philo);
 void		take_left_fork(t_thread *philo);
 void		put_back_forks(t_thread *philo);
 
-long		get_time(void);
+void		*monitor(void *philo_thread);
 
 #endif
