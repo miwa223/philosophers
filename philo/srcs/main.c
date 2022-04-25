@@ -1,18 +1,17 @@
 #include "philo.h"
 #include "utils.h"
 
-int	destroy_fork_mutexes(t_thread *philo)
+void	destroy_fork_mutexes(t_thread *philo)
 {
 	int	i;
 
 	i = 0;
 	while (i < philo->data->num)
 	{
-		if (pthread_mutex_destroy(&philo->fork[i]->mutex) != 0)
-			return (-1);
+		pthread_mutex_unlock(&philo->fork[i]->mutex);
+		pthread_mutex_destroy(&philo->fork[i]->mutex);
 		i++;
 	}
-	return (0);
 }
 
 bool	is_valid_argv(int argc, char **argv)
@@ -67,8 +66,32 @@ int	philosopher(t_thread **philo)
 			return (1);
 		i++;
 	}
-	destroy_fork_mutexes(philo[0]);
 	return (0);
+}
+
+void	free_contents(t_thread **philo)
+{
+	int	i;
+	int	num_of_philo;
+
+	i = 0;
+	num_of_philo = philo[0]->data->num;
+	while (i < num_of_philo)
+	{
+		pthread_mutex_unlock(&philo[i]->fork[i]->mutex);
+		pthread_mutex_destroy(&philo[i]->fork[i]->mutex);
+		free(philo[i]->fork[i]);
+		i++;
+	}
+	free(philo[0]->monitor);
+	free(philo[0]->fork);
+	i = 0;
+	while (i < num_of_philo)
+	{
+		free(philo[i]);
+		i++;
+	}
+	free(philo);
 }
 
 int	main(int argc, char **argv)
@@ -88,5 +111,6 @@ int	main(int argc, char **argv)
 		return (exit_program(PHILO));
 	if (pthread_join(philo[0]->monitor->tid, NULL) != 0)
 		return (exit_program(MONITOR));
+	free_contents(philo);
 	return (0);
 }
