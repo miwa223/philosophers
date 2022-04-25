@@ -51,17 +51,10 @@ int	exit_program(int type, t_thread **philo)
 		printf("Invalid arguments.\n");
 	else if (type == MALLOC)
 		printf("Memory allocation failed.\n");
-	else if (type == MONITOR || type == PHILO)
+	else
 	{
-		pthread_detach(philo[0]->monitor->tid);
-		if (type == PHILO)
-		{
-			while (i < philo[0]->data->num)
-			{
-				pthread_detach(philo[i]->tid);
-				i++;
-			}
-		}
+		if (type != MONITOR_CREATE)
+			pthread_detach(philo[0]->monitor->tid);
 		free_contents(philo[0]->fork, philo[0]->monitor, philo);
 		printf("Error detected while simulation.\n");
 	}
@@ -76,14 +69,22 @@ int	philosopher(t_thread **philo)
 	while (i < philo[0]->data->num)
 	{
 		if (pthread_create(&philo[i]->tid, NULL, action, philo[i]) != 0)
+		{
+			while (i-- > 0)
+				pthread_detach(philo[i]->tid);
 			return (1);
+		}
 		i++;
 	}
 	i = 0;
 	while (i < philo[0]->data->num)
 	{
 		if (pthread_join(philo[i]->tid, NULL) != 0)
+		{
+			while (i < philo[0]->data->num)
+				pthread_detach(philo[i++]->tid);
 			return (1);
+		}
 		i++;
 	}
 	return (0);
@@ -101,11 +102,11 @@ int	main(int argc, char **argv)
 	if (philo == NULL)
 		return (exit_program(MALLOC, NULL));
 	if (pthread_create(&philo[0]->monitor->tid, NULL, monitor, philo[0]) != 0)
-		return (exit_program(MONITOR, philo));
+		return (exit_program(MONITOR_CREATE, philo));
 	if (philosopher(philo) == 1)
 		return (exit_program(PHILO, philo));
 	if (pthread_join(philo[0]->monitor->tid, NULL) != 0)
-		return (exit_program(MONITOR, philo));
+		return (exit_program(MONITOR_JOIN, philo));
 	free_contents(philo[0]->fork, philo[0]->monitor, philo);
 	return (0);
 }

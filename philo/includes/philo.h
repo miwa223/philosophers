@@ -13,7 +13,8 @@ typedef enum e_error
 {
 	ARG,
 	MALLOC,
-	MONITOR,
+	MONITOR_CREATE,
+	MONITOR_JOIN,
 	PHILO,
 }				t_error;
 
