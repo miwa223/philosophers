@@ -67,4 +67,9 @@ void		put_back_forks(t_thread *philo);
 
 void		*monitor(void *philo_thread);
 
+void		*free_contents(t_fork **fork, t_monitor *monitor, t_thread **philo);
+void		*free_fork(t_fork **fork);
+
+int			exit_program(int type, t_thread **philo);
+
 #endif

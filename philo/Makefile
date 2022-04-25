@@ -1,9 +1,9 @@
 NAME = philo
 CC = gcc
 INC = includes
-CFLAGS = -Wall -Wextra -Werror -I$(INC)
+CFLAGS = -Wall -Wextra -Werror -I$(INC) -g -fsanitize=address
 SRCS = srcs/main.c srcs/init.c srcs/action.c \
-		srcs/fork_operation.c srcs/monitor.c \
+		srcs/fork_operation.c srcs/monitor.c srcs/free.c \
 		srcs/utils/ft_atoi.c srcs/utils/ft_isdigit.c \
 		srcs/utils/ft_strlen.c srcs/utils/get_time.c
 OBJS = $(SRCS:.c=.o)
