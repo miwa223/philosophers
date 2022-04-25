@@ -101,7 +101,7 @@ int	main(int argc, char **argv)
 	philo = init_philo(&data);
 	if (philo == NULL)
 		return (exit_program(MALLOC, NULL));
-	if (pthread_create(&philo[0]->monitor->tid, NULL, monitor, philo[0]) != 0)
+	if (pthread_create(&philo[0]->monitor->tid, NULL, monitor, philo) != 0)
 		return (exit_program(MONITOR_CREATE, philo));
 	if (philosopher(philo) == 1)
 		return (exit_program(PHILO, philo));
