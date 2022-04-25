@@ -7,7 +7,7 @@ void	*monitor(void *philo_thread)
 
 	philo = (t_thread *)philo_thread;
 	i = 0;
-	while (!philo->monitor->dead)
+	while (!philo->monitor->end)
 		usleep(100);
 	while (i < philo->data->num)
 	{

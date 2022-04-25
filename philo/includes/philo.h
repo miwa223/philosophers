@@ -36,7 +36,7 @@ typedef struct s_fork
 typedef struct s_monitor
 {
 	pthread_t	tid;
-	bool		dead;
+	bool		end;
 	int			dead_philo;
 	bool		already_dead;
 }				t_monitor;

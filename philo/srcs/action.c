@@ -10,10 +10,10 @@ void	eating(t_thread *philo)
 	take_left_fork(philo);
 	eat_time = get_time();
 	printf("%zu %d has taken a fork\n", eat_time, philo->id + 1);
-	if (philo->monitor->dead
+	if (philo->monitor->end
 		|| eat_time - philo->prev_eat_time >= philo->data->die_t)
 	{
-		philo->monitor->dead = true;
+		philo->monitor->end = true;
 		if (philo->monitor->dead_philo == 0)
 			philo->monitor->dead_philo = philo->id;
 		return ;
@@ -58,18 +58,21 @@ void	*action(void *philo)
 	philo_cp->prev_eat_time = get_time();
 	if (philo_cp->id % 2 == 1)
 		usleep(200);
-	while (!philo_cp->monitor->dead)
+	while (!philo_cp->monitor->end)
 	{
 		eating(philo_cp);
 		if (philo_cp->eaten_cnt == philo_cp->data->eat_times)
+		{
+			philo_cp->monitor->end = true;
 			break ;
-		if (philo_cp->monitor->dead)
+		}
+		if (philo_cp->monitor->end)
 		{
 			operate_for_first_dead(philo_cp);
 			break ;
 		}
 		sleeping(philo_cp);
-		if (philo_cp->monitor->dead)
+		if (philo_cp->monitor->end)
 			break ;
 		thinking(philo_cp);
 	}

@@ -45,7 +45,7 @@ t_monitor	*init_monitor(void)
 	monitor = (t_monitor *)malloc(sizeof(t_monitor));
 	if (monitor == NULL)
 		return (NULL);
-	monitor->dead = false;
+	monitor->end = false;
 	monitor->dead_philo = 0;
 	monitor->already_dead = false;
 	return (monitor);
