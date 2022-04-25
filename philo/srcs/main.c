@@ -1,6 +1,7 @@
 #include "philo.h"
 #include "utils.h"
 
+// 未使用関数
 void	destroy_fork_mutexes(t_thread *philo)
 {
 	int	i;
@@ -41,10 +42,29 @@ bool	is_valid_argv(int argc, char **argv)
 	return (true);
 }
 
-int	exit_program(int type)
+int	exit_program(int type, t_thread **philo)
 {
-	(void)type;
-	printf("Error detected while simulation.\n");
+	int	i;
+
+	i = 0;
+	if (type == ARG)
+		printf("Invalid arguments.\n");
+	else if (type == MALLOC)
+		printf("Memory allocation failed.\n");
+	else if (type == MONITOR || type == PHILO)
+	{
+		pthread_detach(philo[0]->monitor->tid);
+		if (type == PHILO)
+		{
+			while (i < philo[0]->data->num)
+			{
+				pthread_detach(philo[i]->tid);
+				i++;
+			}
+		}
+		free_contents(philo[0]->fork, philo[0]->monitor, philo);
+		printf("Error detected while simulation.\n");
+	}
 	return (1);
 }
 
@@ -69,48 +89,23 @@ int	philosopher(t_thread **philo)
 	return (0);
 }
 
-void	free_contents(t_thread **philo)
-{
-	int	i;
-	int	num_of_philo;
-
-	i = 0;
-	num_of_philo = philo[0]->data->num;
-	while (i < num_of_philo)
-	{
-		pthread_mutex_unlock(&philo[i]->fork[i]->mutex);
-		pthread_mutex_destroy(&philo[i]->fork[i]->mutex);
-		free(philo[i]->fork[i]);
-		i++;
-	}
-	free(philo[0]->monitor);
-	free(philo[0]->fork);
-	i = 0;
-	while (i < num_of_philo)
-	{
-		free(philo[i]);
-		i++;
-	}
-	free(philo);
-}
-
 int	main(int argc, char **argv)
 {
 	t_data		data;
 	t_thread	**philo;
 
 	if (!is_valid_argv(argc, argv))
-		exit_program(ARG);
+		return (exit_program(ARG, NULL));
 	init_data(argv, &data);
 	philo = init_philo(&data);
 	if (philo == NULL)
-		return (exit_program(MALLOC));
+		return (exit_program(MALLOC, NULL));
 	if (pthread_create(&philo[0]->monitor->tid, NULL, monitor, philo[0]) != 0)
-		return (exit_program(MONITOR));
+		return (exit_program(MONITOR, philo));
 	if (philosopher(philo) == 1)
-		return (exit_program(PHILO));
+		return (exit_program(PHILO, philo));
 	if (pthread_join(philo[0]->monitor->tid, NULL) != 0)
-		return (exit_program(MONITOR));
-	free_contents(philo);
+		return (exit_program(MONITOR, philo));
+	free_contents(philo[0]->fork, philo[0]->monitor, philo);
 	return (0);
 }
