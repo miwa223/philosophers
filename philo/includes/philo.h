@@ -58,7 +58,7 @@ void		init_data(char **argv, t_data *data);
 t_fork		**init_fork(t_data *data);
 t_thread	**init_philo(t_data *data);
 
-void		*action(void *philo);
+void		*action(void *philo_thread);
 void		eating(t_thread *philo);
 void		sleeping(t_thread *philo);
 void		thinking(t_thread *philo);
@@ -68,6 +68,7 @@ void		take_left_fork(t_thread *philo);
 void		put_back_forks(t_thread *philo);
 
 void		*monitor(void *philo_thread);
+bool		someone_died(t_thread *philo, int i);
 
 void		*free_contents(t_fork **fork, t_monitor *monitor, t_thread **philo);
 void		*free_fork(t_fork **fork);

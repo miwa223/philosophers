@@ -40,25 +40,25 @@ void	thinking(t_thread *philo)
 		printf("%ld %d is thinking\n", get_time(), philo->id + 1);
 }
 
-void	*action(void *philo)
+void	*action(void *philo_thread)
 {
-	t_thread	*philo_cp;
+	t_thread	*philo;
 
-	philo_cp = (t_thread *)philo;
-	if (philo_cp->id % 2 == 1)
+	philo = (t_thread *)philo_thread;
+	if (philo->id % 2 == 1)
 		usleep(200);
-	while (!philo_cp->monitor->end)
+	while (!philo->monitor->end)
 	{
-		eating(philo_cp);
-		if (philo_cp->eaten_cnt == philo_cp->data->eat_times)
+		eating(philo);
+		if (philo->eaten_cnt == philo->data->eat_times)
 		{
-			philo_cp->eat_done = true;
+			philo->eat_done = true;
 			break ;
 		}
-		if (!philo_cp->monitor->end)
-			sleeping(philo_cp);
-		if (!philo_cp->monitor->end)
-			thinking(philo_cp);
+		if (!philo->monitor->end)
+			sleeping(philo);
+		if (!philo->monitor->end)
+			thinking(philo);
 	}
 	return (NULL);
 }
