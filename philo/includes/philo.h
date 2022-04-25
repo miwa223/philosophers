@@ -37,8 +37,6 @@ typedef struct s_monitor
 {
 	pthread_t	tid;
 	bool		end;
-	int			dead_philo;
-	bool		already_dead;
 }				t_monitor;
 
 typedef struct s_thread

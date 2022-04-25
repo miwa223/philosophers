@@ -46,8 +46,6 @@ t_monitor	*init_monitor(void)
 	if (monitor == NULL)
 		return (NULL);
 	monitor->end = false;
-	monitor->dead_philo = 0;
-	monitor->already_dead = false;
 	return (monitor);
 }
 
