@@ -69,6 +69,7 @@ t_thread	**init_philo_content(
 		philo[i]->id = i;
 		philo[i]->data = data;
 		philo[i]->fork = fork;
+		philo[i]->prev_eat_time = get_time();
 		philo[i]->eaten_cnt = 0;
 		philo[i]->monitor = monitor;
 		i++;
