@@ -11,6 +11,7 @@ void	take_right_fork(t_thread *philo)
 			philo->fork[philo->id]->taken = true;
 			break ;
 		}
+		usleep(50);
 	}
 	pthread_mutex_unlock(&philo->fork[philo->id]->mutex);
 }
@@ -26,6 +27,7 @@ void	take_left_fork(t_thread *philo)
 			philo->fork[(philo->id + 1) % philo->data->num]->taken = true;
 			break ;
 		}
+		usleep(50);
 	}
 	pthread_mutex_unlock(
 		&philo->fork[(philo->id + 1) % philo->data->num]->mutex);
