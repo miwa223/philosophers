@@ -9,6 +9,7 @@ void	eating(t_thread *philo)
 	printf("%zu %d has taken a fork\n", get_time(), philo->id + 1);
 	take_left_fork(philo);
 	eat_time = get_time();
+	printf("%zu %d has taken a fork\n", eat_time, philo->id + 1);
 	if (philo->monitor->dead
 		|| eat_time - philo->prev_eat_time >= philo->data->die_t)
 	{
@@ -17,7 +18,6 @@ void	eating(t_thread *philo)
 			philo->monitor->dead_philo = philo->id;
 		return ;
 	}
-	printf("%zu %d has taken a fork\n", eat_time, philo->id + 1);
 	printf("%zu %d is eating\n", eat_time, philo->id + 1);
 	philo->prev_eat_time = eat_time;
 	usleep(philo->data->eat_t - (get_time() - eat_time));
