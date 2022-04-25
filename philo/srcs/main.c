@@ -1,20 +1,6 @@
 #include "philo.h"
 #include "utils.h"
 
-// 未使用関数
-void	destroy_fork_mutexes(t_thread *philo)
-{
-	int	i;
-
-	i = 0;
-	while (i < philo->data->num)
-	{
-		pthread_mutex_unlock(&philo->fork[i]->mutex);
-		pthread_mutex_destroy(&philo->fork[i]->mutex);
-		i++;
-	}
-}
-
 bool	is_valid_argv(int argc, char **argv)
 {
 	int		i;
