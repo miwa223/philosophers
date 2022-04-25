@@ -6,12 +6,13 @@ void	eating(t_thread *philo)
 	long	eat_time;
 
 	take_right_fork(philo);
-	printf("%zu %d has taken a fork\n", get_time(), philo->id + 1);
+	eat_time = get_time();
+	printf("%ld %d has taken a fork\n", eat_time, philo->id + 1);
 	if (philo->monitor->end)
 		return ;
 	take_left_fork(philo);
 	eat_time = get_time();
-	printf("%zu %d has taken a fork\n", eat_time, philo->id + 1);
+	printf("%ld %d has taken a fork\n", eat_time, philo->id + 1);
 	if (philo->monitor->end
 		|| eat_time - philo->prev_eat_time >= philo->data->die_t)
 	{
@@ -20,7 +21,7 @@ void	eating(t_thread *philo)
 			philo->monitor->dead_philo = philo->id;
 		return ;
 	}
-	printf("%zu %d is eating\n", eat_time, philo->id + 1);
+	printf("%ld %d is eating\n", eat_time, philo->id + 1);
 	philo->prev_eat_time = eat_time;
 	usleep(philo->data->eat_t - (get_time() - eat_time));
 	philo->eaten_cnt += 1;
@@ -32,13 +33,13 @@ void	sleeping(t_thread *philo)
 	long	now;
 
 	now = get_time();
-	printf("%zu %d is sleeping\n", now, philo->id + 1);
+	printf("%ld %d is sleeping\n", now, philo->id + 1);
 	usleep(philo->data->sleep_t - (now - philo->prev_eat_time));
 }
 
 void	thinking(t_thread *philo)
 {
-	printf("%zu %d is thinking\n", get_time(), philo->id + 1);
+	printf("%ld %d is thinking\n", get_time(), philo->id + 1);
 }
 
 void	operate_for_first_dead(t_thread *philo)
@@ -47,7 +48,7 @@ void	operate_for_first_dead(t_thread *philo)
 	{
 		philo->monitor->already_dead = true;
 		usleep(50);
-		printf("%zu %d died\n",
+		printf("%ld %d died\n",
 			get_time(), philo->monitor->dead_philo + 1);
 	}
 }
@@ -65,7 +66,7 @@ void	*action(void *philo)
 		eating(philo_cp);
 		if (philo_cp->eaten_cnt == philo_cp->data->eat_times)
 		{
-			philo_cp->monitor->end = true;
+			philo_cp->eat_done = true;
 			break ;
 		}
 		if (philo_cp->monitor->end)

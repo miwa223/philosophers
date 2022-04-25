@@ -49,6 +49,7 @@ typedef struct s_thread
 	t_fork		**fork;
 	long		prev_eat_time;
 	int			eaten_cnt;
+	bool		eat_done;
 	t_monitor	*monitor;
 }				t_thread;
 
