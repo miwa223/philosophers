@@ -7,6 +7,8 @@ void	eating(t_thread *philo)
 
 	take_right_fork(philo);
 	printf("%zu %d has taken a fork\n", get_time(), philo->id + 1);
+	if (philo->monitor->end)
+		return ;
 	take_left_fork(philo);
 	eat_time = get_time();
 	printf("%zu %d has taken a fork\n", eat_time, philo->id + 1);
