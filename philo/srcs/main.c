@@ -1,10 +1,21 @@
 #include "philo.h"
 #include "utils.h"
 
+bool	is_digit(char **argv, int i)
+{
+	size_t	j;
+
+	j = 0;
+	while (argv[i][j] && ft_isdigit(argv[i][j]) == 1)
+		j++;
+	if (ft_strlen(argv[i]) != j)
+		return (false);
+	return (true);
+}
+
 bool	is_valid_argv(int argc, char **argv)
 {
 	int		i;
-	size_t	j;
 	int		overflow;
 	int		num;
 
@@ -13,15 +24,14 @@ bool	is_valid_argv(int argc, char **argv)
 		return (false);
 	while (i < argc)
 	{
-		j = 0;
-		while (argv[i][j] && ft_isdigit(argv[i][j]) == 1)
-			j++;
-		if (ft_strlen(argv[i]) != j)
+		if (!is_digit(argv, i))
 			return (false);
 		num = ft_atoi(argv[i], &overflow);
-		if ((i != 1 && i != 5) && (num <= 0 || num > USEC_T_MAX || overflow))
+		if (overflow || num <= 0)
 			return (false);
-		else if ((i == 1 || i == 5) && (num <= 0 || overflow))
+		if (i == 1 && num > THREAD_MAX - 2)
+			return (false);
+		if ((1 < i && i < 5) && (unsigned int)num > UINT_MAX / 1000)
 			return (false);
 		i++;
 	}

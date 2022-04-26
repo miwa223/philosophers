@@ -7,7 +7,7 @@
 # include <unistd.h>
 # include <stdbool.h>
 
-# define USEC_T_MAX 1000000
+# define THREAD_MAX 512
 
 typedef enum e_error
 {
