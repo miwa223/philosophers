@@ -8,8 +8,8 @@ void	init_data(char **argv, t_data *data)
 	i = 0;
 	data->num = ft_atoi(argv[1], NULL);
 	data->die_t = (unsigned int)ft_atoi(argv[2], NULL);
-	data->eat_t = (unsigned int)ft_atoi(argv[3], NULL) * 1000;
-	data->sleep_t = (unsigned int)ft_atoi(argv[4], NULL) * 1000;
+	data->eat_t = (unsigned int)ft_atoi(argv[3], NULL);
+	data->sleep_t = (unsigned int)ft_atoi(argv[4], NULL);
 	if (argv[5] != NULL)
 		data->eat_times = ft_atoi(argv[5], NULL);
 	else
@@ -46,6 +46,7 @@ t_monitor	*init_monitor(void)
 	if (monitor == NULL)
 		return (NULL);
 	monitor->end = false;
+	pthread_mutex_init(&monitor->mutex, NULL);
 	return (monitor);
 }
 
@@ -68,7 +69,9 @@ t_thread	**init_philo_content(
 		philo[i]->data = data;
 		philo[i]->fork = fork;
 		philo[i]->prev_eat_time = get_time();
-		philo[i]->eaten_cnt = 0;
+		pthread_mutex_init(&philo[i]->mutex_time, NULL);
+		philo[i]->eat_count = 0;
+		pthread_mutex_init(&philo[i]->mutex_count, NULL);
 		philo[i]->monitor = monitor;
 		i++;
 	}

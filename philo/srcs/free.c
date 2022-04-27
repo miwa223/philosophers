@@ -24,11 +24,19 @@ void	*free_contents(t_fork **fork, t_monitor *monitor, t_thread **philo)
 	if (fork)
 		free_fork(fork);
 	if (monitor)
+	{
+		pthread_mutex_unlock(&philo[0]->monitor->mutex);
+		pthread_mutex_destroy(&philo[0]->monitor->mutex);
 		free(monitor);
+	}
 	if (philo)
 	{
 		while (philo[i])
 		{
+			pthread_mutex_unlock(&philo[i]->mutex_time);
+			pthread_mutex_destroy(&philo[i]->mutex_time);
+			pthread_mutex_unlock(&philo[i]->mutex_count);
+			pthread_mutex_destroy(&philo[i]->mutex_count);
 			free(philo[i]);
 			i++;
 		}

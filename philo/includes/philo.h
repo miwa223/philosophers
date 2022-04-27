@@ -35,42 +35,50 @@ typedef struct s_fork
 
 typedef struct s_monitor
 {
-	pthread_t	tid;
-	bool		end;
+	pthread_t		tid;
+	bool			end;
+	pthread_mutex_t	mutex;
 }				t_monitor;
 
 typedef struct s_thread
 {
-	int			id;
-	pthread_t	tid;
-	t_data		*data;
-	t_fork		**fork;
-	long		prev_eat_time;
-	int			eaten_cnt;
-	bool		eat_done;
-	t_monitor	*monitor;
+	int				id;
+	pthread_t		tid;
+	t_data			*data;
+	t_fork			**fork;
+	long			prev_eat_time;
+	pthread_mutex_t	mutex_time;
+	int				eat_count;
+	pthread_mutex_t	mutex_count;
+	t_monitor		*monitor;
 }				t_thread;
 
 int			philosopher(t_thread **philo);
+bool		is_valid_argv(int argc, char **argv);
+t_thread	**init_philo(t_data *data);
+t_thread	**init_philo_content(
+				t_data *data, t_fork **fork, t_monitor *monitor);
 void		init_data(char **argv, t_data *data);
 t_fork		**init_fork(t_data *data);
-t_thread	**init_philo(t_data *data);
+t_monitor	*init_monitor(void);
 
 void		*action(void *philo_thread);
+void		take_a_fork(
+				bool (*func)(t_thread *, int), t_thread *philo, int num);
+bool		check_fork_is_remaining(t_thread *philo, int num);
+void		put_back_forks(t_thread *philo);
 void		eating(t_thread *philo);
 void		sleeping(t_thread *philo);
 void		thinking(t_thread *philo);
 
-void		take_right_fork(t_thread *philo);
-void		take_left_fork(t_thread *philo);
-void		put_back_forks(t_thread *philo);
-
 void		*monitor(void *philo_thread);
 bool		someone_died(t_thread *philo, int i);
+bool		ate_enough(t_thread *philo);
+void		raise_end_flag(t_thread *philo);
+bool		is_end(t_thread *philo);
 
 void		*free_contents(t_fork **fork, t_monitor *monitor, t_thread **philo);
 void		*free_fork(t_fork **fork);
-
 int			exit_program(int type, t_thread **philo);
 
 #endif
