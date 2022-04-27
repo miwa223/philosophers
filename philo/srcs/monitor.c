@@ -21,6 +21,7 @@ bool	someone_died(t_thread *philo, int i)
 	if (get_time() - prev_eat_time > philo->data->die_t)
 	{
 		raise_end_flag(philo);
+		usleep(1000);
 		printf("%ld %d died\n", get_time(), i + 1);
 		return (true);
 	}
@@ -68,7 +69,7 @@ void	*monitor(void *philo_thread)
 			raise_end_flag(philo[0]);
 			break ;
 		}
-		usleep(50);
+		usleep(100);
 	}
 	return (NULL);
 }
