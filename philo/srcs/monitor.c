@@ -60,7 +60,7 @@ void	*monitor(void *philo_thread)
 		{
 			if (someone_died(philo[i], i))
 				return (NULL);
-			if (ate_enough(philo[i]))
+			if (philo[i]->data->eat_times != -1 && ate_enough(philo[i]))
 				count++;
 			i++;
 		}
