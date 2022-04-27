@@ -17,12 +17,12 @@ void	take_a_fork(bool (*func)(t_thread *, int), t_thread *philo, int num)
 {
 	while (!is_end(philo))
 	{
-		if (!func(philo, num) && !is_end(philo))
+		if (!func(philo, num))
 		{
 			printf("%ld %d has taken a fork\n", get_time(), philo->id + 1);
 			break ;
 		}
-		usleep(100);
+		sleep_loop(1, get_time());
 	}
 }
 
