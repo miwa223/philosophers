@@ -35,7 +35,7 @@ bool	ate_enough(t_thread *philo)
 	pthread_mutex_lock(&philo->mutex_count);
 	eat_count = philo->eat_count;
 	pthread_mutex_unlock(&philo->mutex_count);
-	return (eat_count == philo->data->eat_times);
+	return (eat_count >= philo->data->eat_times);
 }
 
 void	raise_end_flag(t_thread *philo)
@@ -69,7 +69,7 @@ void	*monitor(void *philo_thread)
 			raise_end_flag(philo[0]);
 			break ;
 		}
-		usleep(100);
+		sleep_loop(1, get_time());
 	}
 	return (NULL);
 }
