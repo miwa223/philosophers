@@ -1,18 +1,6 @@
 #include "philo.h"
 #include "utils.h"
 
-bool	is_digit(char **argv, int i)
-{
-	size_t	j;
-
-	j = 0;
-	while (argv[i][j] && ft_isdigit(argv[i][j]) == 1)
-		j++;
-	if (ft_strlen(argv[i]) != j)
-		return (false);
-	return (true);
-}
-
 bool	is_valid_argv(int argc, char **argv)
 {
 	int		i;
