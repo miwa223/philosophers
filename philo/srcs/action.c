@@ -14,11 +14,6 @@ void	eating(t_thread *philo)
 	pthread_mutex_lock(&philo->mutex_time);
 	philo->prev_eat_time = eat_time;
 	pthread_mutex_unlock(&philo->mutex_time);
-	if (is_end(philo))
-	{
-		put_back_forks(philo);
-		return ;
-	}
 	sleep_loop(philo->data->eat_t, eat_time);
 	pthread_mutex_lock(&philo->mutex_count);
 	philo->eat_count += 1;
@@ -30,18 +25,14 @@ void	sleeping(t_thread *philo)
 {
 	long	now;
 
-	if (!is_end(philo))
-	{
-		now = get_time();
-		printf("%ld %d is sleeping\n", now, philo->id + 1);
-		sleep_loop(philo->data->sleep_t, now);
-	}
+	now = get_time();
+	printf("%ld %d is sleeping\n", now, philo->id + 1);
+	sleep_loop(philo->data->sleep_t, now);
 }
 
 void	thinking(t_thread *philo)
 {
-	if (!is_end(philo))
-		printf("%ld %d is thinking\n", get_time(), philo->id + 1);
+	printf("%ld %d is thinking\n", get_time(), philo->id + 1);
 }
 
 void	*action(void *philo_thread)
@@ -54,7 +45,11 @@ void	*action(void *philo_thread)
 	while (!is_end(philo))
 	{
 		eating(philo);
+		if (is_end(philo))
+			break ;
 		sleeping(philo);
+		if (is_end(philo))
+			break ;
 		thinking(philo);
 	}
 	return (NULL);
