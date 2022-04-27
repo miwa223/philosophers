@@ -1,7 +1,7 @@
 NAME = philo
 CC = gcc
 INC = includes
-CFLAGS = -Wall -Wextra -Werror -I$(INC) -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -I$(INC) #-g -fsanitize=thread
 SRCS = srcs/main.c srcs/init.c srcs/action.c \
 		srcs/fork_operation.c srcs/monitor.c srcs/free.c \
 		srcs/utils/ft_atoi.c srcs/utils/ft_isdigit.c \
