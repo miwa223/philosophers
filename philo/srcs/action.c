@@ -54,10 +54,8 @@ void	*action(void *philo_thread)
 	while (!is_end(philo))
 	{
 		eating(philo);
-		if (!is_end(philo))
-			sleeping(philo);
-		if (!is_end(philo))
-			thinking(philo);
+		sleeping(philo);
+		thinking(philo);
 	}
 	return (NULL);
 }

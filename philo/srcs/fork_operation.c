@@ -6,24 +6,18 @@ bool	check_fork_is_remaining(t_thread *philo, int num)
 	bool	prev_status;
 
 	prev_status = false;
-	if (!is_end(philo))
-	{
-		pthread_mutex_lock(&philo->fork[num]->mutex);
-		prev_status = philo->fork[num]->taken;
-		philo->fork[num]->taken = true;
-		pthread_mutex_unlock(&philo->fork[num]->mutex);
-	}
+	pthread_mutex_lock(&philo->fork[num]->mutex);
+	prev_status = philo->fork[num]->taken;
+	philo->fork[num]->taken = true;
+	pthread_mutex_unlock(&philo->fork[num]->mutex);
 	return (prev_status);
 }
 
 void	take_a_fork(bool (*func)(t_thread *, int), t_thread *philo, int num)
 {
-	bool	prev_status;
-
 	while (!is_end(philo))
 	{
-		prev_status = func(philo, num);
-		if (!prev_status && !is_end(philo))
+		if (!func(philo, num) && !is_end(philo))
 		{
 			printf("%ld %d has taken a fork\n", get_time(), philo->id + 1);
 			break ;
