@@ -1,38 +1,38 @@
 #include "philo.h"
 #include "utils.h"
 
-bool	check_fork_is_remaining(t_thread *philo, int num)
+long	take_a_fork(t_thread *philo, int num)
 {
-	bool	prev_status;
+	long	time;
 
-	prev_status = false;
 	pthread_mutex_lock(&philo->fork[num]->mutex);
-	prev_status = philo->fork[num]->taken;
-	philo->fork[num]->taken = true;
-	pthread_mutex_unlock(&philo->fork[num]->mutex);
-	return (prev_status);
-}
-
-void	take_a_fork(bool (*func)(t_thread *, int), t_thread *philo, int num)
-{
-	while (!is_end(philo))
+	// if (!philo->fork[num]->taken)
+	// {
+	// philo->fork[num]->taken = true;
+	time = print_msg(philo, "has taken a fork");
+	if (time == 0)
 	{
-		if (!func(philo, num))
-		{
-			printf("%ld %d has taken a fork\n", get_time(), philo->id + 1);
-			break ;
-		}
-		sleep_loop(1, get_time());
+		if (num != philo->id)
+			put_back_forks(philo);
+		else
+			pthread_mutex_unlock(&philo->fork[num]->mutex);
+		return (0);
 	}
+	if (philo->data->num == 1)
+	{
+		pthread_mutex_unlock(&philo->fork[num]->mutex);
+		return (0);
+	}
+	return (time);
+	// }
+	// return (true);
 }
 
 void	put_back_forks(t_thread *philo)
 {
-	pthread_mutex_lock(&philo->fork[philo->id]->mutex);
-	philo->fork[philo->id]->taken = false;
+	// philo->fork[philo->id]->taken = false;
 	pthread_mutex_unlock(&philo->fork[philo->id]->mutex);
-	pthread_mutex_lock(&philo->fork[(philo->id + 1) % philo->data->num]->mutex);
-	philo->fork[(philo->id + 1) % philo->data->num]->taken = false;
+	// philo->fork[(philo->id + 1) % philo->data->num]->taken = false;
 	pthread_mutex_unlock(
-		&philo->fork[(philo->id + 1) % philo->data->num]->mutex);
+		&philo->fork[philo->left_fork_id]->mutex);
 }

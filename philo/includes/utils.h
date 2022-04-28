@@ -11,7 +11,7 @@ int		ft_atoi(char *str, int *overflow);
 size_t	ft_strlen(const char *s);
 int		ft_isdigit(int c);
 bool	is_digit(char **argv, int i);
-long	get_time(void);
-void	sleep_loop(unsigned int	time_to_sleep, long past_time);
+long	get_usec(void);
+void	sleep_loop_usec(unsigned int need_to_sleep_usec, long past_time_usec);
 
 #endif

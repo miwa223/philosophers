@@ -7,9 +7,9 @@ void	init_data(char **argv, t_data *data)
 
 	i = 0;
 	data->num = ft_atoi(argv[1], NULL);
-	data->die_t = (unsigned int)ft_atoi(argv[2], NULL);
-	data->eat_t = (unsigned int)ft_atoi(argv[3], NULL);
-	data->sleep_t = (unsigned int)ft_atoi(argv[4], NULL);
+	data->die_usec = (unsigned int)ft_atoi(argv[2], NULL) * 1000;
+	data->eat_usec = (unsigned int)ft_atoi(argv[3], NULL) * 1000;
+	data->sleep_usec = (unsigned int)ft_atoi(argv[4], NULL) * 1000;
 	if (argv[5] != NULL)
 		data->eat_times = ft_atoi(argv[5], NULL);
 	else
@@ -30,7 +30,7 @@ t_fork	**init_fork(t_data *data)
 		fork[i] = malloc(sizeof(t_fork));
 		if (fork[i] == NULL)
 			return (free_contents(fork, NULL, NULL));
-		fork[i]->taken = false;
+		// fork[i]->taken = false;
 		pthread_mutex_init(&fork[i]->mutex, NULL);
 		i++;
 	}
@@ -68,7 +68,8 @@ t_thread	**init_philo_content(
 		philo[i]->id = i;
 		philo[i]->data = data;
 		philo[i]->fork = fork;
-		philo[i]->prev_eat_time = get_time();
+		philo[i]->left_fork_id = (i + 1) % data->num;
+		philo[i]->prev_eat_time = get_usec();
 		pthread_mutex_init(&philo[i]->mutex_time, NULL);
 		philo[i]->eat_count = 0;
 		pthread_mutex_init(&philo[i]->mutex_count, NULL);

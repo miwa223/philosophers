@@ -1,56 +1,77 @@
 #include "philo.h"
 #include "utils.h"
 
-void	eating(t_thread *philo)
+long	print_msg(t_thread *philo, char *str)
+{
+	long	now;
+
+	pthread_mutex_lock(&philo->monitor->mutex);
+	if (philo->monitor->end)
+	{
+		pthread_mutex_unlock(&philo->monitor->mutex);
+		return (0);
+	}
+	now = get_usec();
+	printf("%ld %d %s\n", now / 1000, philo->id + 1, str);
+	pthread_mutex_unlock(&philo->monitor->mutex);
+	return (now);
+}
+
+bool	eating(t_thread *philo, long start_time)
 {
 	long	eat_time;
 
-	take_a_fork(check_fork_is_remaining, philo, philo->id);
-	take_a_fork(
-		check_fork_is_remaining, philo, (philo->id + 1) % philo->data->num);
-	eat_time = get_time();
-	if (!is_end(philo))
-		printf("%ld %d is eating\n", eat_time, philo->id + 1);
+	eat_time = print_msg(philo, "is eating");
+	if (eat_time == 0)
+		return (false);
 	pthread_mutex_lock(&philo->mutex_time);
 	philo->prev_eat_time = eat_time;
 	pthread_mutex_unlock(&philo->mutex_time);
-	sleep_loop(philo->data->eat_t, eat_time);
+	sleep_loop_usec(philo->data->eat_usec, start_time);
 	pthread_mutex_lock(&philo->mutex_count);
 	philo->eat_count += 1;
 	pthread_mutex_unlock(&philo->mutex_count);
 	put_back_forks(philo);
+	return (true);
 }
 
-void	sleeping(t_thread *philo)
+bool	sleeping(t_thread *philo)
 {
-	long	now;
+	long	start_time;
 
-	now = get_time();
-	printf("%ld %d is sleeping\n", now, philo->id + 1);
-	sleep_loop(philo->data->sleep_t, now);
+	start_time = print_msg(philo, "is sleeping");
+	if (start_time == 0)
+		return (false);
+	sleep_loop_usec(philo->data->sleep_usec, start_time); //forkおろす時からにしたほうがいいかも
+	return (true);
 }
 
-void	thinking(t_thread *philo)
+bool	thinking(t_thread *philo)
 {
-	printf("%ld %d is thinking\n", get_time(), philo->id + 1);
+	return (print_msg(philo, "is thinking"));
 }
 
 void	*action(void *philo_thread)
 {
 	t_thread	*philo;
+	long		start_time;
 
 	philo = (t_thread *)philo_thread;
 	if (philo->id % 2 == 1)
-		usleep(200);
-	while (!is_end(philo))
+		usleep(1000);
+	while (1)
 	{
-		eating(philo);
-		if (is_end(philo))
+		if (!take_a_fork(philo, philo->id))
 			break ;
-		sleeping(philo);
-		if (is_end(philo))
+		start_time = take_a_fork(philo, philo->left_fork_id);
+		if (start_time == 0)
 			break ;
-		thinking(philo);
+		if (!eating(philo, start_time))
+			break ;
+		if (!sleeping(philo))
+			break ;
+		if (!thinking(philo))
+			break ;
 	}
 	return (NULL);
 }

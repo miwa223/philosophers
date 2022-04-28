@@ -21,15 +21,15 @@ typedef enum e_error
 typedef struct s_data
 {
 	int				num;
-	unsigned int	die_t;
-	unsigned int	eat_t;
-	unsigned int	sleep_t;
+	unsigned int	die_usec;
+	unsigned int	eat_usec;
+	unsigned int	sleep_usec;
 	int				eat_times;
 }				t_data;
 
 typedef struct s_fork
 {
-	bool			taken;
+	// bool			taken;
 	pthread_mutex_t	mutex;
 }				t_fork;
 
@@ -46,6 +46,7 @@ typedef struct s_thread
 	pthread_t		tid;
 	t_data			*data;
 	t_fork			**fork;
+	int				left_fork_id;
 	long			prev_eat_time;
 	pthread_mutex_t	mutex_time;
 	int				eat_count;
@@ -63,22 +64,21 @@ t_fork		**init_fork(t_data *data);
 t_monitor	*init_monitor(void);
 
 void		*action(void *philo_thread);
-void		take_a_fork(
-				bool (*func)(t_thread *, int), t_thread *philo, int num);
-bool		check_fork_is_remaining(t_thread *philo, int num);
+long		take_a_fork(t_thread *philo, int num);
+bool		eating(t_thread *philo, long start_time);
 void		put_back_forks(t_thread *philo);
-void		eating(t_thread *philo);
-void		sleeping(t_thread *philo);
-void		thinking(t_thread *philo);
+bool		sleeping(t_thread *philo);
+bool		thinking(t_thread *philo);
 
 void		*monitor(void *philo_thread);
 bool		someone_died(t_thread *philo, int i);
 bool		ate_enough(t_thread *philo);
 void		raise_end_flag(t_thread *philo);
-bool		is_end(t_thread *philo);
 
 void		*free_contents(t_fork **fork, t_monitor *monitor, t_thread **philo);
 void		*free_fork(t_fork **fork);
 int			exit_program(int type, t_thread **philo);
+
+long		print_msg(t_thread *philo, char *str);
 
 #endif

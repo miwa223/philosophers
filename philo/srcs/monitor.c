@@ -1,16 +1,6 @@
 #include "philo.h"
 #include "utils.h"
 
-bool	is_end(t_thread *philo)
-{
-	bool	end_flag;
-
-	pthread_mutex_lock(&philo->monitor->mutex);
-	end_flag = philo->monitor->end;
-	pthread_mutex_unlock(&philo->monitor->mutex);
-	return (end_flag);
-}
-
 bool	someone_died(t_thread *philo, int i)
 {
 	long	prev_eat_time;
@@ -18,11 +8,12 @@ bool	someone_died(t_thread *philo, int i)
 	pthread_mutex_lock(&philo->mutex_time);
 	prev_eat_time = philo->prev_eat_time;
 	pthread_mutex_unlock(&philo->mutex_time);
-	if (get_time() - prev_eat_time > philo->data->die_t)
+	if (get_usec() - prev_eat_time > philo->data->die_usec)
 	{
-		raise_end_flag(philo);
-		usleep(1000);
-		printf("%ld %d died\n", get_time(), i + 1);
+		pthread_mutex_lock(&philo->monitor->mutex);
+		philo->monitor->end = true;
+		printf("%ld %d died\n", get_usec() / 1000, i + 1);
+		pthread_mutex_unlock(&philo->monitor->mutex);
 		return (true);
 	}
 	return (false);
@@ -52,7 +43,7 @@ void	*monitor(void *philo_thread)
 	int			count;
 
 	philo = (t_thread **)philo_thread;
-	while (!is_end(philo[0]))
+	while (1)
 	{
 		i = 0;
 		count = 0;
@@ -69,7 +60,7 @@ void	*monitor(void *philo_thread)
 			raise_end_flag(philo[0]);
 			break ;
 		}
-		sleep_loop(1, get_time());
+		sleep_loop_usec(1000, get_usec());
 	}
 	return (NULL);
 }
