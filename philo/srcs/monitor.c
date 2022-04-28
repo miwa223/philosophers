@@ -60,7 +60,7 @@ void	*monitor(void *philo_thread)
 			raise_end_flag(philo[0]);
 			break ;
 		}
-		sleep_loop_usec(1000, get_usec());
+		sleep_loop_usec(800, get_usec());
 	}
 	return (NULL);
 }
