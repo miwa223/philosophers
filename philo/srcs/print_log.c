@@ -1,7 +1,7 @@
 #include "philo.h"
 #include "utils.h"
 
-long	print_msg(t_thread *philo, char *str)
+long	print_log(t_thread *philo, char *msg)
 {
 	long	now;
 
@@ -12,7 +12,7 @@ long	print_msg(t_thread *philo, char *str)
 		return (0);
 	}
 	now = get_usec();
-	printf("%ld %d %s\n", now / 1000, philo->id + 1, str);
+	printf("%ld %d %s\n", now / 1000, philo->id + 1, msg);
 	pthread_mutex_unlock(&philo->monitor->mutex);
 	return (now);
 }

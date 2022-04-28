@@ -69,7 +69,7 @@ void		put_back_forks(t_thread *philo);
 bool		sleeping(t_thread *philo);
 bool		thinking(t_thread *philo);
 
-long		print_msg(t_thread *philo, char *str);
+long		print_log(t_thread *philo, char *msg);
 
 void		*monitor(void *philo_thread);
 bool		someone_died(t_thread *philo, int i);

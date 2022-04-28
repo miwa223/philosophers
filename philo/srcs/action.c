@@ -5,7 +5,7 @@ bool	eating(t_thread *philo, long start_time)
 {
 	long	eat_time;
 
-	eat_time = print_msg(philo, "is eating");
+	eat_time = print_log(philo, "is eating");
 	if (eat_time == 0)
 		return (false);
 	pthread_mutex_lock(&philo->mutex_time);
@@ -23,7 +23,7 @@ bool	sleeping(t_thread *philo)
 {
 	long	start_time;
 
-	start_time = print_msg(philo, "is sleeping");
+	start_time = print_log(philo, "is sleeping");
 	if (start_time == 0)
 		return (false);
 	sleep_loop_usec(philo->data->sleep_usec, start_time);
@@ -32,7 +32,7 @@ bool	sleeping(t_thread *philo)
 
 bool	thinking(t_thread *philo)
 {
-	return (print_msg(philo, "is thinking"));
+	return (print_log(philo, "is thinking"));
 }
 
 void	*action(void *philo_thread)

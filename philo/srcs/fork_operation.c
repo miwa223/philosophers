@@ -6,7 +6,7 @@ long	take_a_fork(t_thread *philo, int num)
 	long	time;
 
 	pthread_mutex_lock(&philo->fork[num]->mutex);
-	time = print_msg(philo, "has taken a fork");
+	time = print_log(philo, "has taken a fork");
 	if (time == 0)
 	{
 		if (num != philo->id)
