@@ -30,7 +30,6 @@ t_fork	**init_fork(t_data *data)
 		fork[i] = malloc(sizeof(t_fork));
 		if (fork[i] == NULL)
 			return (free_contents(fork, NULL, NULL));
-		// fork[i]->taken = false;
 		pthread_mutex_init(&fork[i]->mutex, NULL);
 		i++;
 	}

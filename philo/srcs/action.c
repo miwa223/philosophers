@@ -42,7 +42,7 @@ bool	sleeping(t_thread *philo)
 	start_time = print_msg(philo, "is sleeping");
 	if (start_time == 0)
 		return (false);
-	sleep_loop_usec(philo->data->sleep_usec, start_time); //forkおろす時からにしたほうがいいかも
+	sleep_loop_usec(philo->data->sleep_usec, start_time);
 	return (true);
 }
 

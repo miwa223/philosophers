@@ -29,7 +29,6 @@ typedef struct s_data
 
 typedef struct s_fork
 {
-	// bool			taken;
 	pthread_mutex_t	mutex;
 }				t_fork;
 
@@ -70,6 +69,8 @@ void		put_back_forks(t_thread *philo);
 bool		sleeping(t_thread *philo);
 bool		thinking(t_thread *philo);
 
+long		print_msg(t_thread *philo, char *str);
+
 void		*monitor(void *philo_thread);
 bool		someone_died(t_thread *philo, int i);
 bool		ate_enough(t_thread *philo);
@@ -78,7 +79,5 @@ void		raise_end_flag(t_thread *philo);
 void		*free_contents(t_fork **fork, t_monitor *monitor, t_thread **philo);
 void		*free_fork(t_fork **fork);
 int			exit_program(int type, t_thread **philo);
-
-long		print_msg(t_thread *philo, char *str);
 
 #endif
