@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra -Werror -I$(INC)
 SRCS = srcs/main.c srcs/init.c srcs/action.c srcs/fork_operation.c\
 		srcs/print_log.c srcs/monitor.c srcs/free.c \
 		srcs/utils/ft_atoi.c srcs/utils/ft_isdigit.c \
-		srcs/utils/ft_strlen.c srcs/utils/get_time.c
+		srcs/utils/ft_strlen.c srcs/utils/get_usec.c
 OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
