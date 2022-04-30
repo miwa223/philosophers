@@ -8,7 +8,7 @@ long	take_forks(t_thread *philo)
 	sem_wait(philo->monitor->sem_fork);
 	print_log(philo, "has taken a fork");
 	time = print_log(philo, "has taken a fork");
-	if (time == 0 || philo->data->num == 1)
+	if (time == 0)
 	{
 		sem_post(philo->monitor->sem_fork);
 		return (0);
