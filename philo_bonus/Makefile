@@ -1,0 +1,25 @@
+NAME = philo_bonus
+CC = gcc
+INC = includes
+CFLAGS = -Wall -Wextra -Werror -I$(INC)
+SRCS = srcs/main.c srcs/init.c srcs/open_semaphores.c \
+		srcs/action.c srcs/print_log.c \
+		srcs/monitor.c srcs/free.c srcs/error_handling.c \
+		srcs/utils/ft_atoi.c srcs/utils/ft_isdigit.c \
+		srcs/utils/ft_strlen.c srcs/utils/get_usec.c
+OBJS = $(SRCS:.c=.o)
+
+all: $(NAME)
+
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME) -lpthread
+
+clean:
+	rm -f $(OBJS)
+
+fclean: clean
+	rm -f $(NAME)
+
+re: fclean all
+
+.PHONY: all clean fclean re
