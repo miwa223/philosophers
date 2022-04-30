@@ -7,17 +7,11 @@ void	delete_sems(t_monitor *monitor, int id)
 		printf("Errno: %d: Error while sem_unlink.\n", errno);
 	if (id > 1)
 	{
-		sem_close(monitor->sem_time);
-		if (sem_unlink(SEM_EAT_TIME))
-			printf("Errno: %d: Error while sem_unlink.\n", errno);
-	}
-	if (id > 2)
-	{
 		sem_close(monitor->sem_count);
 		if (sem_unlink(SEM_EAT_COUNT))
 			printf("Errno: %d: Error while sem_unlink.\n", errno);
 	}
-	if (id > 3)
+	if (id > 2)
 	{
 		sem_close(monitor->sem_end);
 		if (sem_unlink(SEM_END))

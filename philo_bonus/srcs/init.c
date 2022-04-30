@@ -23,7 +23,6 @@ t_monitor	*init_monitor(void)
 	monitor = (t_monitor *)malloc(sizeof(t_monitor));
 	if (monitor == NULL)
 		return (NULL);
-	monitor->end = false;
 	return (monitor);
 }
 
@@ -59,7 +58,7 @@ t_thread	**init_philo(t_data *data)
 	monitor = init_monitor();
 	if (monitor == NULL)
 		return (NULL);
-	if (open_semaphores(data, monitor) == NULL)
+	if (init_semaphores(data, monitor) == NULL)
 		return (NULL);
 	return (init_philo_content(data, monitor));
 }

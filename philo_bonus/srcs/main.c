@@ -1,14 +1,24 @@
 #include "philo_bonus.h"
 
+void	check_philos_eat_done(t_thread *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->data->num)
+	{
+		sem_wait(philo->monitor->sem_count);
+		i++;
+	}
+	exit(EXIT_SUCCESS);
+}
+
 void	exec_philo(t_thread **philo, int i)
 {
-	if (pthread_create(&philo[i]->monitor->tid, NULL, monitor, philo[i])
-		|| pthread_create(&philo[i]->tid, NULL, action, philo[i])
-		|| pthread_detach(philo[i]->tid)
-		|| pthread_join(philo[i]->monitor->tid, NULL))
+	if (pthread_create(&philo[i]->tid, NULL, action, philo[i])
+		|| pthread_join(philo[i]->tid, NULL))
 	{
 		pthread_detach(philo[i]->tid);
-		pthread_detach(philo[i]->monitor->tid);
 		exit(EXIT_FAILURE);
 	}
 	exit(EXIT_SUCCESS);
@@ -20,10 +30,10 @@ int	*create_processes_and_threads(t_thread **philo)
 	int	i;
 
 	i = 0;
-	pid = malloc(sizeof(int) * philo[0]->data->num);
+	pid = malloc(sizeof(int) * (philo[0]->data->num + 1));
 	if (pid == NULL)
 		return (NULL);
-	while (i < philo[0]->data->num)
+	while (i < philo[0]->data->num + 1)
 	{
 		pid[i] = fork();
 		if (pid[i] == -1)
@@ -32,7 +42,12 @@ int	*create_processes_and_threads(t_thread **philo)
 			kill(0, SIGINT);
 		}
 		if (pid[i] == 0)
-			exec_philo(philo, i);
+		{
+			if (i == 0)
+				check_philos_eat_done(philo[0]);
+			else
+				exec_philo(philo, i - 1);
+		}
 		i++;
 	}
 	return (pid);
@@ -51,7 +66,7 @@ void	wait_child(int *pid, t_thread **philo)
 		error_handling(WAITING, philo, pid);
 		kill(0, SIGINT);
 	}
-	while (i < philo[0]->data->num)
+	while (i < philo[0]->data->num + 1)
 	{
 		kill(pid[i], SIGINT);
 		i++;

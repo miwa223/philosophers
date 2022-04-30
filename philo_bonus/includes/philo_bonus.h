@@ -18,7 +18,7 @@
 # define SEM_END "/ends"
 # define SEM_EAT_TIME "/eat_times"
 # define SEM_EAT_COUNT "/eat_counts"
-# define NUM_OF_SEM 4
+# define NUM_OF_SEM 3
 # define PROCESS_MAX 709
 
 typedef enum e_error
@@ -42,9 +42,7 @@ typedef struct s_monitor
 {
 	pthread_t	tid;
 	sem_t		*sem_fork;
-	sem_t		*sem_time;
 	sem_t		*sem_count;
-	bool		end;
 	sem_t		*sem_end;
 }				t_monitor;
 
@@ -60,6 +58,7 @@ typedef struct s_thread
 
 bool		is_valid_argv(int argc, char **argv);
 int			*create_processes_and_threads(t_thread **philo);
+void		check_philos_eat_done(t_thread *philo);
 void		exec_philo(t_thread **philo, int i);
 void		wait_child(int *pid, t_thread **philo);
 
@@ -67,7 +66,7 @@ t_thread	**init_philo(t_data *data);
 t_thread	**init_philo_content(t_data *data, t_monitor *monitor);
 void		init_data(char **argv, t_data *data);
 t_monitor	*init_monitor(void);
-void		*open_semaphores(t_data *data, t_monitor *monitor);
+void		*init_semaphores(t_data *data, t_monitor *monitor);
 sem_t		*open_a_semaphore(char *str, int num);
 
 void		*action(void *philo_thread);
@@ -76,12 +75,8 @@ bool		eating(t_thread *philo, long start_time);
 bool		sleeping(t_thread *philo);
 bool		thinking(t_thread *philo);
 
+bool		is_dead(t_thread *philo);
 long		print_log(t_thread *philo, char *msg);
-
-void		*monitor(void *philo_thread);
-bool		is_died(t_thread *philo, int i);
-bool		ate_enough(t_thread *philo);
-void		raise_end_flag(t_thread *philo);
 
 void		*free_contents(t_monitor *monitor, t_thread **philo, int num);
 void		delete_sems(t_monitor *monitor, int id);
