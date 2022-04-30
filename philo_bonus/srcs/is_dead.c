@@ -1,4 +1,5 @@
 #include "philo_bonus.h"
+#include "utils.h"
 
 bool	is_dead(t_thread *philo)
 {
