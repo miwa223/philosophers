@@ -16,7 +16,6 @@
 
 # define SEM_FORK "/forks"
 # define SEM_END "/ends"
-# define SEM_EAT_TIME "/eat_times"
 # define SEM_EAT_COUNT "/eat_counts"
 # define NUM_OF_SEM 3
 # define PROCESS_MAX 709
