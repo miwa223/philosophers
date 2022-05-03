@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmasubuc  <mmasubuc@student.42tokyo.>      +#+  +:+       +#+        */
+/*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 00:16:15 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/04/28 20:32:02 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/03 17:19:12 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_data
 
 typedef struct s_fork
 {
+	bool			is_taken;
 	pthread_mutex_t	mutex;
 }				t_fork;
 

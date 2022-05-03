@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmasubuc  <mmasubuc@student.42tokyo.>      +#+  +:+       +#+        */
+/*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 12:01:24 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/04/28 19:18:58 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/03 17:22:10 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 void	init_data(char **argv, t_data *data)
 {
-	int		i;
-
-	i = 0;
 	data->num = ft_atoi(argv[1], NULL);
 	data->die_usec = (unsigned int)ft_atoi(argv[2], NULL) * 1000;
 	data->eat_usec = (unsigned int)ft_atoi(argv[3], NULL) * 1000;
@@ -42,6 +39,7 @@ t_fork	**init_fork(t_data *data)
 		fork[i] = malloc(sizeof(t_fork));
 		if (fork[i] == NULL)
 			return (free_contents(fork, NULL, NULL));
+		fork[i]->is_taken = false;
 		pthread_mutex_init(&fork[i]->mutex, NULL);
 		i++;
 	}
