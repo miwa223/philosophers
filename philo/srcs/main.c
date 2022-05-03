@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmasubuc  <mmasubuc@student.42tokyo.>      +#+  +:+       +#+        */
+/*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 01:27:26 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/04/30 16:53:02 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/03 17:20:11 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ bool	is_valid_argv(int argc, char **argv)
 
 int	exit_program(int type, t_thread **philo)
 {
-	int	i;
-
-	i = 0;
 	if (type == ARG)
 		printf("Invalid arguments.\n");
 	else if (type == MALLOC)

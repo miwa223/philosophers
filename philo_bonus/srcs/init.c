@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmasubuc  <mmasubuc@student.42tokyo.>      +#+  +:+       +#+        */
+/*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 16:52:59 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/04/30 23:15:49 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/03 17:20:22 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,6 @@
 
 void	init_data(char **argv, t_data *data)
 {
-	int		i;
-
-	i = 0;
 	data->num = ft_atoi(argv[1], NULL);
 	data->die_usec = (unsigned int)ft_atoi(argv[2], NULL) * 1000;
 	data->eat_usec = (unsigned int)ft_atoi(argv[3], NULL) * 1000;

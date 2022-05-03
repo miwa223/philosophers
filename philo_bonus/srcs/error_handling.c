@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmasubuc  <mmasubuc@student.42tokyo.>      +#+  +:+       +#+        */
+/*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 18:35:11 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/04/30 18:48:31 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/03 17:21:46 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,6 @@ bool	is_valid_argv(int argc, char **argv)
 
 int	error_handling(int type, t_thread **philo, int *pid)
 {
-	int	i;
-
-	i = 0;
 	if (type == ARG)
 		printf("Invalid arguments.\n");
 	else if (type == INIT)
