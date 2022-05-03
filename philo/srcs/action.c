@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmasubuc  <mmasubuc@student.42tokyo.>      +#+  +:+       +#+        */
+/*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 12:58:23 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/04/28 20:30:59 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/03 17:31:40 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ bool	eating(t_thread *philo, long start_time)
 
 	eat_time = print_log(philo, "is eating");
 	if (eat_time == 0)
+	{
+		put_back_forks(philo);
 		return (false);
+	}
 	pthread_mutex_lock(&philo->mutex_time);
 	philo->prev_eat_time = eat_time;
 	pthread_mutex_unlock(&philo->mutex_time);
