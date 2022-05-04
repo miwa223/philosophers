@@ -35,7 +35,7 @@ void	eating(t_thread *philo, long start_time)
 	philo->eat_count += 1;
 	sem_post(philo->monitor->sem_fork);
 	if (philo->data->eat_times != -1
-		&& philo->eat_count >= philo->data->eat_times)
+		&& philo->eat_count == philo->data->eat_times)
 		sem_post(philo->monitor->sem_count);
 }
 
