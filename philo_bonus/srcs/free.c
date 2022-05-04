@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmasubuc  <mmasubuc@student.42tokyo.>      +#+  +:+       +#+        */
+/*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 19:22:21 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/04/30 23:11:50 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/04 00:28:56 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,12 @@
 
 void	delete_sems(t_monitor *monitor, int id)
 {
-	sem_close(monitor->sem_fork);
-	if (sem_unlink(SEM_FORK))
-		printf("Errno: %d: Error while sem_unlink.\n", errno);
+	if (id > 0)
+	{
+		sem_close(monitor->sem_fork);
+		if (sem_unlink(SEM_FORK))
+			printf("Errno: %d: Error while sem_unlink.\n", errno);
+	}
 	if (id > 1)
 	{
 		sem_close(monitor->sem_count);
@@ -24,6 +27,12 @@ void	delete_sems(t_monitor *monitor, int id)
 			printf("Errno: %d: Error while sem_unlink.\n", errno);
 	}
 	if (id > 2)
+	{
+		sem_close(monitor->sem_time);
+		if (sem_unlink(SEM_EAT_TIME))
+			printf("Errno: %d: Error while sem_unlink.\n", errno);
+	}
+	if (id > 3)
 	{
 		sem_close(monitor->sem_end);
 		if (sem_unlink(SEM_END))

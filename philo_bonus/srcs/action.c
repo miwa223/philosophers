@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   action.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmasubuc  <mmasubuc@student.42tokyo.>      +#+  +:+       +#+        */
+/*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/28 23:55:57 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/04/30 23:41:08 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/04 21:15:52 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,44 +20,36 @@ long	take_forks(t_thread *philo)
 	sem_wait(philo->monitor->sem_fork);
 	print_log(philo, "has taken a fork");
 	time = print_log(philo, "has taken a fork");
-	if (time == 0)
-	{
-		sem_post(philo->monitor->sem_fork);
-		return (0);
-	}
-	if (is_dead(philo))
-		return (0);
 	return (time);
 }
 
-bool	eating(t_thread *philo, long start_time)
+void	eating(t_thread *philo, long start_time)
 {
-	philo->prev_eat_time = print_log(philo, "is eating");
+	long	eat_time;
+
+	eat_time = print_log(philo, "is eating");
+	sem_wait(philo->monitor->sem_time);
+	philo->prev_eat_time = eat_time;
+	sem_post(philo->monitor->sem_time);
 	sleep_loop_usec(philo->data->eat_usec, start_time);
 	philo->eat_count += 1;
 	sem_post(philo->monitor->sem_fork);
 	if (philo->data->eat_times != -1
 		&& philo->eat_count >= philo->data->eat_times)
 		sem_post(philo->monitor->sem_count);
-	if (is_dead(philo))
-		return (false);
-	return (true);
 }
 
-bool	sleeping(t_thread *philo)
+void	sleeping(t_thread *philo)
 {
 	long	start_time;
 
 	start_time = print_log(philo, "is sleeping");
 	sleep_loop_usec(philo->data->sleep_usec, start_time);
-	if (is_dead(philo))
-		return (false);
-	return (true);
 }
 
-bool	thinking(t_thread *philo)
+void	thinking(t_thread *philo)
 {
-	return (print_log(philo, "is thinking"));
+	print_log(philo, "is thinking");
 }
 
 void	*action(void *philo_thread)
@@ -68,17 +60,12 @@ void	*action(void *philo_thread)
 	philo = (t_thread *)philo_thread;
 	if (philo->id % 2 == 1)
 		usleep(1000);
-	while (!is_dead(philo))
+	while (1)
 	{
 		start_time = take_forks(philo);
-		if (start_time == 0)
-			break ;
-		if (!eating(philo, start_time))
-			break ;
-		if (!sleeping(philo))
-			break ;
-		if (!thinking(philo))
-			break ;
+		eating(philo, start_time);
+		sleeping(philo);
+		thinking(philo);
 	}
 	return (NULL);
 }

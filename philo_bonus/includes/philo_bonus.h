@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmasubuc  <mmasubuc@student.42tokyo.>      +#+  +:+       +#+        */
+/*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 01:37:48 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/04/30 23:56:29 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/04 21:17:07 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,10 @@
 # include <errno.h>
 
 # define SEM_FORK "/forks"
-# define SEM_END "/ends"
+# define SEM_EAT_TIME "/eat_time"
 # define SEM_EAT_COUNT "/eat_counts"
-# define NUM_OF_SEM 3
+# define SEM_END "/ends"
+# define NUM_OF_SEM 4
 # define PROCESS_MAX 709
 
 typedef enum e_error
@@ -54,6 +55,7 @@ typedef struct s_monitor
 	pthread_t	tid;
 	sem_t		*sem_fork;
 	sem_t		*sem_count;
+	sem_t		*sem_time;
 	sem_t		*sem_end;
 }				t_monitor;
 
@@ -82,12 +84,14 @@ sem_t		*open_a_semaphore(char *str, int num);
 
 void		*action(void *philo_thread);
 long		take_forks(t_thread *philo);
-bool		eating(t_thread *philo, long start_time);
-bool		sleeping(t_thread *philo);
-bool		thinking(t_thread *philo);
+void		eating(t_thread *philo, long start_time);
+void		sleeping(t_thread *philo);
+void		thinking(t_thread *philo);
 
 bool		is_dead(t_thread *philo);
 long		print_log(t_thread *philo, char *msg);
+
+void		*monitor(void *philo_thread);
 
 void		*free_contents(t_monitor *monitor, t_thread **philo, int num);
 void		delete_sems(t_monitor *monitor, int id);

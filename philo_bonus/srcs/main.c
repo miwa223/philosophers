@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mmasubuc  <mmasubuc@student.42tokyo.>      +#+  +:+       +#+        */
+/*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 01:38:04 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/04/30 23:21:37 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/04 00:30:25 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,12 @@ void	check_philos_eat_done(t_thread *philo)
 
 void	exec_philo(t_thread **philo, int i)
 {
-	if (pthread_create(&philo[i]->tid, NULL, action, philo[i])
-		|| pthread_join(philo[i]->tid, NULL))
+	if (pthread_create(&philo[i]->monitor->tid, NULL, monitor, philo[i])
+		|| pthread_create(&philo[i]->tid, NULL, action, philo[i])
+		|| pthread_detach(philo[i]->tid)
+		|| pthread_join(philo[i]->monitor->tid, NULL))
 	{
-		pthread_detach(philo[i]->tid);
+		pthread_detach(philo[i]->monitor->tid);
 		exit(EXIT_FAILURE);
 	}
 	exit(EXIT_SUCCESS);
