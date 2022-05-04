@@ -53,7 +53,7 @@ int	*create_processes_and_threads(t_thread **philo)
 		if (pid[i] == -1)
 		{
 			error_handling(FORK, philo, pid);
-			kill(0, SIGINT);
+			kill(0, SIGKILL);
 		}
 		if (pid[i] == 0)
 		{
@@ -78,11 +78,11 @@ void	wait_child(int *pid, t_thread **philo)
 	if (res == -1)
 	{
 		error_handling(WAITING, philo, pid);
-		kill(0, SIGINT);
+		kill(0, SIGKILL);
 	}
 	while (i < philo[0]->data->num + 1)
 	{
-		kill(pid[i], SIGINT);
+		kill(pid[i], SIGKILL);
 		i++;
 	}
 }
