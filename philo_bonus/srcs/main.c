@@ -6,7 +6,7 @@
 /*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 01:38:04 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/05/04 00:30:25 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/05 08:08:45 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,8 @@ int	main(int argc, char **argv)
 	if (philo == NULL)
 		return (error_handling(INIT, NULL, NULL));
 	pid = create_processes_and_threads(philo);
+	if (pid == NULL)
+		return (error_handling(MALLOC, philo, NULL));
 	wait_child(pid, philo);
 	free(pid);
 	free_contents(philo[0]->monitor, philo, NUM_OF_SEM);

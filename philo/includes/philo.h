@@ -6,7 +6,7 @@
 /*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 00:16:15 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/05/03 17:19:12 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/05 08:04:43 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,6 @@ void		raise_end_flag(t_thread *philo);
 
 void		*free_contents(t_fork **fork, t_monitor *monitor, t_thread **philo);
 void		*free_fork(t_fork **fork);
-int			exit_program(int type, t_thread **philo);
+int			exit_program(t_error type, t_thread **philo);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 01:27:26 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/05/05 07:59:20 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/05 08:04:56 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	is_valid_argv(int argc, char **argv)
 	return (true);
 }
 
-int	exit_program(int type, t_thread **philo)
+int	exit_program(t_error type, t_thread **philo)
 {
 	if (type == ARG)
 		printf("Invalid arguments.\n");

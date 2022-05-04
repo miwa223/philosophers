@@ -6,7 +6,7 @@
 /*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 01:37:48 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/05/05 00:09:18 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/05 08:09:01 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef enum e_error
 {
 	ARG,
 	INIT,
+	MALLOC,
 	FORK,
 	WAITING,
 }				t_error;
@@ -94,6 +95,6 @@ void		*monitor(void *philo_thread);
 
 void		*free_contents(t_monitor *monitor, t_thread **philo, int num);
 void		delete_sems(t_monitor *monitor, int id);
-int			error_handling(int type, t_thread **philo, int *pid);
+int			error_handling(t_error type, t_thread **philo, int *pid);
 
 #endif

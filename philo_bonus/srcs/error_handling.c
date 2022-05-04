@@ -6,7 +6,7 @@
 /*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/30 18:35:11 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/05/03 17:21:46 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/05 08:11:21 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,17 @@ bool	is_valid_argv(int argc, char **argv)
 	return (true);
 }
 
-int	error_handling(int type, t_thread **philo, int *pid)
+int	error_handling(t_error type, t_thread **philo, int *pid)
 {
 	if (type == ARG)
 		printf("Invalid arguments.\n");
 	else if (type == INIT)
 		printf("Data initialization failed.\n");
+	else if (type == MALLOC)
+	{
+		free_contents(philo[0]->monitor, philo, NUM_OF_SEM);
+		printf("Memory allocation failed.\n");
+	}
 	else
 	{
 		free(pid);
