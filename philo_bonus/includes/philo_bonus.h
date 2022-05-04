@@ -6,7 +6,7 @@
 /*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 01:37:48 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/05/04 21:17:07 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/05 00:09:18 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void		eating(t_thread *philo, long start_time);
 void		sleeping(t_thread *philo);
 void		thinking(t_thread *philo);
 
-bool		is_dead(t_thread *philo);
 long		print_log(t_thread *philo, char *msg);
 
 void		*monitor(void *philo_thread);

@@ -3,8 +3,7 @@ CC = gcc
 INC = includes
 CFLAGS = -Wall -Wextra -Werror -I$(INC)
 SRCS = srcs/main.c srcs/init.c srcs/init_semaphores.c \
-		srcs/action.c srcs/print_log.c srcs/is_dead.c \
-		srcs/monitor.c \
+		srcs/action.c srcs/print_log.c srcs/monitor.c \
 		srcs/free.c srcs/error_handling.c \
 		srcs/utils/ft_atoi.c srcs/utils/ft_isdigit.c \
 		srcs/utils/ft_strlen.c srcs/utils/get_usec.c
