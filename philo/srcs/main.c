@@ -6,7 +6,7 @@
 /*   By: mmasubuc <mmasubuc@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/11 01:27:26 by mmasubuc          #+#    #+#             */
-/*   Updated: 2022/05/05 08:04:56 by mmasubuc         ###   ########.fr       */
+/*   Updated: 2022/05/05 09:40:23 by mmasubuc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,9 +61,23 @@ int	philosopher(t_thread **philo)
 	i = 0;
 	while (i < philo[0]->data->num)
 	{
-		if (pthread_create(&philo[i]->tid, NULL, action, philo[i])
-			|| pthread_detach(philo[i]->tid))
+		if (pthread_create(&philo[i]->tid, NULL, action, philo[i]))
+		{
+			while (i-- > 0)
+				pthread_detach(philo[i]->tid);
 			return (1);
+		}
+		i++;
+	}
+	i = 0;
+	while (i < philo[0]->data->num)
+	{
+		if (pthread_join(philo[i]->tid, NULL))
+		{
+			while (i < philo[0]->data->num)
+				pthread_detach(philo[i++]->tid);
+			return (1);
+		}
 		i++;
 	}
 	return (0);
